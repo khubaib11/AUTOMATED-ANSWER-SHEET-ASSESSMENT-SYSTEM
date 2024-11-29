@@ -9,7 +9,6 @@ import About from './pages/About.jsx';
 
 export default function App() {
   return (
-    <div id="root">
       <BrowserRouter>
         <Header />
         <main>
@@ -22,6 +21,6 @@ export default function App() {
         </main>
         <Footer />
       </BrowserRouter>
-    </div>
+    
   );
 }
