@@ -3,10 +3,10 @@ import { FaFacebook, FaLinkedin, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-300 py-8 bottom-0 w-full absolute ">
+    <footer className="bg-gray-300 py-8 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Grid Container */}
-        <div className="grid grid-cols-1  lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1  lg:grid-cols-2   gap-2">
           {/* Logo and Description */}
           <div>
             <h2 className="text-xl font-bold text-black">SHEET EVALUATOR</h2>
@@ -41,7 +41,7 @@ const Footer = () => {
 
 
           {/* Social Media Links */}
-          <div className="lg:col-span-3 flex justify-center mt-8">
+          <div className="lg:col-span-3 mt-3">
             <ul className="flex space-x-6">
               <li>
                 <a

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline'; // Import the icon
 
 export default function Header() {
-  const login = true; // Change this to `false` to test logged-out state
+  const login = false; // Change this to `false` to test logged-out state
 
   return (
     <header className="bg-gray-300 text-gray-800 body-font shadow-md">
