@@ -1,8 +1,57 @@
 import React from "react";
-import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import Oauth from "../components/Oauth";
+import { Link,useNavigate } from "react-router-dom";
+import { useState ,useEffect} from "react";
 
 export default function SignIn() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+    // Clear the form when the component mounts
+    useEffect(() => {
+      setFormData({
+        name: "",
+        email: "",
+      });
+    }, []);
+
+  const navigate=useNavigate()
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("api/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const data = await response.json();
+      setMessage(data.message);
+      console.log(message);
+  
+      setFormData({
+        email: "",
+        password: "",
+      });
+  
+      if(response.ok){
+        navigate('/')
+      }  
+    } catch (error) {
+      console.log("somthing problem in fetch function") 
+    }
+  };
+
   return (
     <section className="text-gray-600 body-font  ">
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
@@ -11,7 +60,9 @@ export default function SignIn() {
             Automated Answer Sheet Assessment System
           </h1>
           <p className="leading-relaxed mt-4">
-            Welcome! Log in to effortlessly analyze handwritten papers and receive instant, accurate results. Streamline your grading process with precision and ease. Your smarter assessment tool is here!
+            Welcome! Log in to effortlessly analyze handwritten papers and
+            receive instant, accurate results. Streamline your grading process
+            with precision and ease. Your smarter assessment tool is here!
           </p>
         </div>
         <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
@@ -28,11 +79,16 @@ export default function SignIn() {
               id="email"
               name="email"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              onChange={handleChange}
+              value={formData.email}
             />
           </div>
 
           <div className="relative mb-4">
-            <label htmlFor="password" className="leading-7 text-sm text-gray-600">
+            <label
+              htmlFor="password"
+              className="leading-7 text-sm text-gray-600"
+            >
               Password
             </label>
             <input
@@ -40,22 +96,23 @@ export default function SignIn() {
               id="password"
               name="password"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              onChange={handleChange}
+              value={formData.password}
             />
           </div>
 
           <button
             type="button"
             className="text-white bg-gray-400 border-0 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg"
+            onClick={handleSubmit}
           >
             Log in
           </button>
-          <button
-            type="button"
-            className="text-white bg-gray-400 border-0 mt-3 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg flex justify-center items-center space-x-2"
-          >
-            <FaGoogle />
-            <span>Continue with Google</span>
-          </button>
+          <Oauth/>
+          {message && (
+            <div className="text-orange-800 text-sm mt-3">{message}</div>
+          )}
+
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
             <Link to="/signup" className="text-blue-500">

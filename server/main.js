@@ -18,8 +18,9 @@ mongoose.connect(process.env.MONGO_STR).then(()=>{
     console.log(err);
 });
 
+
 app.use('/api/auth',auth);
 
-app.listen(3010,()=>{
+app.listen(3013,()=>{
     console.log('Server is running on port 3000');
 });
