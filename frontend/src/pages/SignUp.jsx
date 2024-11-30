@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import Oauth from "../components/Oauth";
 import { Link,useNavigate } from "react-router-dom";
 
@@ -10,14 +10,6 @@ export default function SignUp() { // Fixed component name capitalization
     password: "",
   });
 
-    // Clear the form when the component mounts
-    useEffect(() => {
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-      });
-    }, []);
   const [message, setMessage] = useState("");
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });

@@ -3,8 +3,11 @@ import { FaGoogle } from "react-icons/fa";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { app } from "../firebase.js";
+import { signInSuccess } from "../redux/user/userSlice.js";
+import { useDispatch } from "react-redux";
 
 export default function Oauth() {
+  const dispatch = useDispatch();
   const auth = getAuth(app);
   const navigate = useNavigate();
 
@@ -36,6 +39,7 @@ export default function Oauth() {
       if (response.ok) {
         const data = await response.json();
         console.log("Server response:", data);
+        dispatch(signInSuccess(data));
         navigate("/");
       } else {
         console.error("Failed to authenticate with backend:", response.statusText);
