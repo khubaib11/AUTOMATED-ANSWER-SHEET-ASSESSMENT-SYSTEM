@@ -74,7 +74,7 @@ export const signIn = async (req, res) => {
     return res
       .status(200)
       .cookie("token", token, { httpOnly: true })
-      .json({ ...rest, message: "Signin successful" });
+      .json({ ...rest, message: "Signin successful" ,isAuthenticated:true});
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
@@ -106,7 +106,7 @@ export const googleSignIn = async (req, res) => {
       return res
         .status(200)
         .cookie("token", token, { httpOnly: true })
-        .json({ ...rest, message: "Signin successful" });
+        .json({ ...rest, message: "Signin successful" ,isAuthenticated:true});
     }
 
     // Create a new user
@@ -136,7 +136,7 @@ export const googleSignIn = async (req, res) => {
       return res
         .status(200)
         .cookie("token", token, { httpOnly: true })
-        .json({ ...rest, message: "Signin successful" });
+        .json({ ...rest, message: "Signin successful",isAuthenticated:true });
 
     } catch (err) {
       return res.status(500).json({ message: "Something went wrong" });

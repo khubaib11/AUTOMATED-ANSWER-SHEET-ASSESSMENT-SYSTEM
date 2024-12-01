@@ -1,9 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline'; // Import the icon
-
+import { useSelector } from 'react-redux';
+import {signOutSuccess} from '../redux/user/userSlice';
+// import { useNavigate } from 'react-router-dom';
+// import { signInSuccess } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 export default function Header() {
-  const login = false; // Change this to `false` to test logged-out state
+  const {currentUser} = useSelector(state=>state.user)
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = async() => {
+    try {
+      const response = await fetch('/api/user/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      if(response.ok){
+
+      const data = await response.json();
+        dispatch(signOutSuccess());
+        console.log('Logged out',data);
+      }else{
+        console.log('Failed to logout');
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+    // dispatch(signInSuccess(null));
+    // localStorage.removeItem('user');
+    // navigate('/signin');
+  }
 
   return (
     <header className="bg-gray-300 text-gray-800 body-font shadow-md">
@@ -12,13 +43,13 @@ export default function Header() {
           <span className="ml-3 text-xl text-black font-bold">SHEET EVALUATOR</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          {login ? (
+          {currentUser ? (
             <>
               <Link
                 to="/"
                 className="mr-5 hover:underline hover:text-black transition duration-300"
               >
-                Home
+                Dashboard
               </Link>
               <Link
                 to="/about"
@@ -28,6 +59,7 @@ export default function Header() {
               </Link>
               <button
                 className="flex items-center text-gray-800 hover:underline hover:text-black transition duration-300"
+                onClick={handleLogout}
               >
                 <ArrowLeftEndOnRectangleIcon className="h-5 w-5 ml-10 mr-2" /> {/* Icon added here */}
                 Log Out
@@ -35,6 +67,13 @@ export default function Header() {
             </>
           ) : (
             <>
+            <Link
+                to="/about"
+                className="mr-5 hover:underline hover:text-black transition duration-300"
+              >
+                About
+              </Link>
+              
               <Link
                 to="/signin"
                 className="mr-5 hover:underline hover:text-black transition duration-300"
