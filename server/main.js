@@ -5,6 +5,7 @@ import auth from './routes/auth.route.js';
 import { json } from 'express';
 import cors from 'cors';
 import userRoute from './routes/user.route.js';
+import resultRoute from './routes/result.route.js';
 
 const app=express();
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(json());
 app.use('/api/auth',auth);
 app.use('/api/user',userRoute);
+app.use('/api/result',resultRoute)
 
 
 
@@ -32,7 +34,6 @@ app.use('/api/user',userRoute);
 
 
 
-
-app.listen(3000,()=>{
+app.listen(3003,()=>{
     console.log('Server is running on port 3000');
 });
