@@ -8,6 +8,7 @@ import Footer from './components/Footer.jsx';
 import About from './pages/About.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 
 export default function App() {
   const {currentUser} = useSelector((state) => state.user); // Adjust to your Redux-persist structure
@@ -39,6 +40,8 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
+
+          <Route path='/forgot-password' element={<ForgotPassword/>}/>
         </Routes>
       </main>
       <Footer />
