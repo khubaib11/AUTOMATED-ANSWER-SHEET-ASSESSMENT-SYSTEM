@@ -37,28 +37,28 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-gray-300 text-gray-800 body-font shadow-md">
+    <header className="bg-gray-900 text-white body-font shadow-md">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <a href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-          <span className="ml-3 text-xl text-black font-bold">SHEET EVALUATOR</span>
+          <span className="ml-3 text-xl text-white font-bold">SHEET EVALUATOR</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
           {currentUser ? (
             <>
               <Link
                 to="/"
-                className="mr-5 hover:underline hover:text-black transition duration-300"
+                className="mr-5 hover:underline hover:text-blue-300 transition duration-300"
               >
                 Dashboard
               </Link>
               <Link
                 to="/about"
-                className="mr-5 hover:underline hover:text-black transition duration-300"
+                className="mr-5 hover:underline hover:text-blue-300 transition duration-300"
               >
                 About
               </Link>
               <button
-                className="flex items-center text-gray-800 hover:underline hover:text-black transition duration-300"
+                className="flex items-center text-white hover:underline hover:text-red-600 transition duration-300"
                 onClick={handleLogout}
               >
                 <ArrowLeftEndOnRectangleIcon className="h-5 w-5 ml-10 mr-2" /> {/* Icon added here */}
@@ -69,20 +69,20 @@ export default function Header() {
             <>
             <Link
                 to="/about"
-                className="mr-5 hover:underline hover:text-black transition duration-300"
+                className="mr-5 hover:underline hover:text-blue-300 transition duration-300"
               >
                 About
               </Link>
               
               <Link
                 to="/signin"
-                className="mr-5 hover:underline hover:text-black transition duration-300"
+                className="mr-5 hover:underline hover:text-blue-300 transition duration-300"
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="mr-5 hover:underline hover:text-black transition duration-300"
+                className="mr-5 hover:underline hover:text-blue-300 transition duration-300"
               >
                 Register
               </Link>

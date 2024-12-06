@@ -34,6 +34,6 @@ app.use('/api/result',resultRoute)
 
 
 
-app.listen(3003,()=>{
+app.listen(3001,()=>{
     console.log('Server is running on port 3000');
 });

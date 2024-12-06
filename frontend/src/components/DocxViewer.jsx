@@ -1,85 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
+import { renderAsync } from "docx-preview";
 
-export default function DocxViewer() {
-  const [loading, setLoading] = useState(true); // Starts as true to simulate progress
-  const [progress, setProgress] = useState(0);
-  const [downloadReady, setDownloadReady] = useState(false); // Controls button visibility
+export default function DocxViewer2() {
+  const viewerElement = useRef(null);
+  const [preview, setPreview] = useState(false);
+
+  const blobToArrayBuffer = (blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Failed to convert Blob to ArrayBuffer"));
+      reader.readAsArrayBuffer(blob);
+    });
+
+  const fetchAndRenderDoc = async () => {
+    setPreview(true);
+    try {
+      const response = await fetch("/api/result/file.docx");
+      if (!response.ok) throw new Error("Failed to fetch document");
+
+      const blob = await response.blob();
+      const arrayBuffer = await blobToArrayBuffer(blob);
+
+      if (viewerElement.current) {
+        await renderAsync(arrayBuffer, viewerElement.current);
+      }
+    } catch (error) {
+      console.error("Error during document rendering:", error);
+    }
+  };
 
   useEffect(() => {
-    if (loading) {
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setLoading(false);  // Set loading to false when complete
-            setDownloadReady(true); // Enable the download button after loading
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 500); // Simulating the progress every 500ms
+    if (preview && viewerElement.current) {
+      fetchAndRenderDoc();
     }
-  }, [loading]);
+  }, [preview]);
 
   const downloadFile = async () => {
-    setLoading(true);
-    setDownloadReady(false); // Hide the button during loading
     try {
-      const response = await fetch("api/result/file.docx", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch file");
-      }
+      const response = await fetch("/api/result/file.docx");
+      if (!response.ok) throw new Error("Failed to fetch file");
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
-
       link.href = url;
-      link.download = "result.docx"; // Change the filename if needed
+      link.download = "result.docx";
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading file:", error);
+      console.error("Error during file download:", error);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-48 bg-gray-100 p-4">
-      {loading ? (
-        <div className="flex flex-col text-center w-full mt-4">
-          <h1 className="text-xl font-medium title-font text-gray-900">Processing...</h1>
-          <div className="relative pt-2 w-3/4 sm:w-1/2 mx-auto">
-            <div className="flex justify-between text-xs text-gray-600">
-              <span>0%</span>
-              <span>100%</span>
-            </div>
-            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-              <div
-                style={{ width: `${progress}%` }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500"
-              ></div>
-            </div>
-            <p className="text-sm text-gray-700">{progress}% Completed</p>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-600">Ready to Download the Document</p>
-        </div>
-      )}
+    <div className="flex flex-col items-center justify-center h-auto bg-gray-100 p-4">
+      <div className="flex space-x-4 mt-4">
+        <button
+          onClick={() => setPreview(!preview)}
+          className="bg-gray-500 hover:bg-gray-900 text-white font-semibold py-1 px-3 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-opacity-50"
+        >
+          { !preview?"View Document":"cancel View" }
+        </button>
 
-      {downloadReady && !loading && (
         <button
           onClick={downloadFile}
-          className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-1 px-3 rounded mt-4 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-50"
+          className="bg-gray-500 hover:bg-gray-900 text-white font-semibold py-1 px-3 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-50"
         >
           Download File
         </button>
+      </div>
+      {preview && (
+        <div
+          ref={viewerElement}
+          className="mt-4 w-full bg-white shadow-md overflow-auto"
+          style={{
+            maxHeight: '800px', 
+            width: '100%',
+            overflowX: 'auto', 
+            overflowY: 'auto', 
+            whiteSpace: 'nowrap'
+          }}
+        ></div>
       )}
     </div>
   );

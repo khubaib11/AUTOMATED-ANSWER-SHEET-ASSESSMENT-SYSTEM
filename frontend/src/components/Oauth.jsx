@@ -52,7 +52,7 @@ export default function Oauth() {
   return (
     <button
       type="button"
-      className="text-white bg-gray-400 border-0 mt-3 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg flex justify-center items-center space-x-2"
+      className="text-white bg-gray-600 border-0 mt-3 py-2 px-8 focus:outline-none hover:bg-gray-900 rounded text-lg flex justify-center items-center space-x-2"
       onClick={handleGoogleClick}
     >
       <FaGoogle />

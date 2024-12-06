@@ -123,7 +123,7 @@ export default function SignUp() { // Fixed component name capitalization
 
           {/* Submit Button */}
           <button
-            className="text-white bg-gray-400 border-0 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg"
+            className="text-white bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-900 rounded text-lg"
             onClick={handleSubmit}
           >
             Sign up

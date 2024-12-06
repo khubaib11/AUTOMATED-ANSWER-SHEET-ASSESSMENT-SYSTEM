@@ -43,7 +43,7 @@ export default function RubricEditer({ setCheck, check }) {
       {/* Buttons */}
       <div className="pt-9 w-full flex justify-center space-x-4">
         <button
-          className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+          className="text-white bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-900 rounded text-lg"
           onClick={() => {
             setText(defaultText);
             setCheck(false);
@@ -52,7 +52,7 @@ export default function RubricEditer({ setCheck, check }) {
           Cancel
         </button>
         <button
-          className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+          className="text-white bg-gray-600 border-0 py-2 px-8 focus:outline-none hover:bg-gray-900 rounded text-lg"
           onClick={() => {
             setText(text);
             console.log(text);

@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-300 py-8 ">
+    <footer className="bg-gray-900 py-8 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Grid Container */}
         <div className="grid grid-cols-1  lg:grid-cols-2   gap-2">
           {/* Logo and Description */}
           <div>
-            <h2 className="text-xl font-bold text-black">SHEET EVALUATOR</h2>
-            <p className="text-gray-600 mt-2">
+            <h2 className="text-xl font-bold text-white">SHEET EVALUATOR</h2>
+            <p className="text-white mt-2">
               Effortlessly assess handwritten copies with SHEET EVALUATOR –
               delivering accurate results and detailed evaluations in just a few
               clicks.
@@ -23,15 +23,15 @@ const Footer = () => {
             <ul className="mt-4 space-y-2">
               
               <li>
-                <Link to="/about" className="text-gray-600 hover:text-blue-500">About</Link>
+                <Link to="/about" className="text-white hover:text-blue-300">About</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-500">
+                <a href="#" className="text-white hover:text-blue-300">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-blue-500">
+                <a href="#" className="text-white hover:text-blue-300">
                   Terms of Use
                 </a>
               </li>
@@ -45,7 +45,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.facebook.com/profile.php?id=100035782686564"
-                  className="text-gray-600 hover:text-blue-500"
+                  className="text-white hover:text-blue-300"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -55,7 +55,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://github.com/khubaib11"
-                  className="text-gray-600 hover:text-blue-500"
+                  className="text-white hover:text-blue-300"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -65,7 +65,7 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.linkedin.com/in/khubaib-munawar-khan/"
-                  className="text-gray-600 hover:text-blue-500"
+                  className="text-white hover:text-blue-300"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -77,7 +77,7 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-6 border-t border-gray-200 pt-4 text-center text-sm text-gray-600">
+        <div className="mt-6 border-t border-gray-200 pt-4 text-center text-sm text-white">
           Copyright &copy; 2024 by SukkurIBA | All rights reserved.
         </div>
       </div>

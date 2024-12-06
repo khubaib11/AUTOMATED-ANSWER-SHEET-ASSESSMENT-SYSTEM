@@ -119,8 +119,8 @@ export default function ForgotPassword() {
               type="button"
               className={`mt-4 text-white border-0 py-2 px-6 rounded text-lg ${
                 formData.email && !sendOtpLoading
-                  ? "bg-indigo-500 hover:bg-indigo-600"
-                  : "bg-gray-400 cursor-not-allowed"
+                  ? "bg-gray-600 hover:bg-gray-900"
+                  : "bg-gray-600 cursor-not-allowed"
               }`}
               onClick={sendOTP}
               disabled={!formData.email || sendOtpLoading}
@@ -146,8 +146,8 @@ export default function ForgotPassword() {
               type="button"
               className={`mt-4 text-white border-0 py-2 px-6 rounded text-lg ${
                 formData.otp && !otpVerified
-                  ? "bg-indigo-500 hover:bg-indigo-600"
-                  : "bg-gray-400 cursor-not-allowed"
+                ? "bg-gray-600 hover:bg-gray-900"
+                : "bg-gray-600 cursor-not-allowed"
               }`}
               onClick={verifyOTP}
               disabled={!formData.otp || otpVerified}
@@ -175,8 +175,8 @@ export default function ForgotPassword() {
           <button
             className={`text-white border-0 py-2 px-8 rounded text-lg ${
               formData.password
-                ? "bg-indigo-500 hover:bg-indigo-600"
-                : "bg-gray-400 cursor-not-allowed"
+              ? "bg-gray-600 hover:bg-gray-900"
+              : "bg-gray-600 cursor-not-allowed"
             }`}
             onClick={updatePassword}
             disabled={!formData.password}
