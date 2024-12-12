@@ -2,13 +2,40 @@ import React, { useState,useEffect } from "react";
 import UploadFiles from "../components/UploadFiles";
 import RubricEditer from "../components/RubricEditer";
 import DocxViewer from "../components/DocxViewer";
+import {signOutSuccess} from "../redux/user/userSlice";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [rubicAdd, setRubicAdd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [evaluated, setEvaluated] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
+
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const response = await fetch("api/user/verifyuser");
+        if (response.status === 200) {
+          console.log("User Verified");
+        } else if (response.status === 401) {
+          alert("Your Session has expired, Please Login Again");
+          dispatch(signOutSuccess());
+          navigate("/signin");
+        } else {
+          console.error("Error verifying user");
+        }
+      } catch (error) {
+        console.error("Network or server error:", error);
+      }
+    };
+  
+    verifyUser();
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     let interval;

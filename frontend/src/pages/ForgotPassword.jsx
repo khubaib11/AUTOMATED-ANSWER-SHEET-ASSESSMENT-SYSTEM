@@ -21,7 +21,7 @@ export default function ForgotPassword() {
   const sendOTP = async () => {
     setSendOtpLoading(true);
     try {
-      const response = await fetch("/api/auth/sendotp", {
+      const response = await fetch("/api/user/sendotp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function ForgotPassword() {
   
   const verifyOTP = async () => {
     try {
-      const response = await fetch("/api/auth/verifyotp", {
+      const response = await fetch("/api/user/verifyotp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function ForgotPassword() {
 
   const updatePassword = async () => {
     try {
-      const response = await fetch("/api/auth/updatepassword", {
+      const response = await fetch("/api/user/updatepassword", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

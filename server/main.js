@@ -6,8 +6,10 @@ import { json } from 'express';
 import cors from 'cors';
 import userRoute from './routes/user.route.js';
 import resultRoute from './routes/result.route.js';
+import cookieParser from 'cookie-parser';
 
 const app=express();
+app.use(cookieParser())
 dotenv.config();
 
 
@@ -27,6 +29,7 @@ app.use(json());
 app.use('/api/auth',auth);
 app.use('/api/user',userRoute);
 app.use('/api/result',resultRoute)
+
 
 
 
