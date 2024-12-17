@@ -9,22 +9,17 @@ import About from './pages/About.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import NotFound from './pages/NotFound.jsx'; // 404 Page
 
 export default function App() {
-  const {currentUser} = useSelector((state) => state.user); // Adjust to your Redux-persist structure
+  const { currentUser } = useSelector((state) => state.user); // Adjust to your Redux-persist structure
 
   return (
     <BrowserRouter>
       <Header />
       <main>
         <Routes>
-          {/* Redirect from SignUp/SignIn if user is logged in */}
-          <Route 
-          path='/*'
-          element={currentUser ? <Navigate to="/dashboard" /> : <SignIn />}
-          >
-            
-          </Route>
+          {/* Public Routes */}
           <Route
             path="/signup"
             element={currentUser ? <Navigate to="/dashboard" /> : <SignUp />}
@@ -34,14 +29,16 @@ export default function App() {
             element={currentUser ? <Navigate to="/dashboard" /> : <SignIn />}
           />
           <Route path="/about" element={<About />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          {/* Protected routes */}
+          {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} /> {/* Default protected route */}
           </Route>
 
-          <Route path='/forgot-password' element={<ForgotPassword/>}/>
+          {/* Catch-all Route for 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
