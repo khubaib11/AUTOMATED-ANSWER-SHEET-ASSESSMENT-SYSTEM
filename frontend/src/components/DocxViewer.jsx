@@ -56,7 +56,7 @@ export default function DocxViewer2() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-auto bg-gray-100 p-4">
+    <div className="flex flex-col items-center justify-center h-auto bg-gray-50 p-4">
       <div className="flex space-x-4 mt-4">
         <button
           onClick={() => setPreview(!preview)}
