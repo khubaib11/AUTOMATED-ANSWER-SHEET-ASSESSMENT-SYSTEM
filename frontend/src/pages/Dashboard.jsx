@@ -5,12 +5,14 @@ import DocxViewer from "../components/DocxViewer";
 import { signOutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
+  const { currentUser } = useSelector((state) => state.user); // Adjust to your Redux-persist structure
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rubricData, setRubricData] = useState({});
-  const [rubricAdd, setRubricAdd] = useState(false); 
+  const [rubricAdd, setRubricAdd] = useState(false);
   const [rubricCount, setRubricCount] = useState(0);
   const [rubricsQuestions, setRubricsQuestions] = useState("");
   const [qData, setQData] = useState({});
@@ -19,6 +21,57 @@ export default function Dashboard() {
   const [evaluated, setEvaluated] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
+
+
+  const rubricSned = async () => {
+    if (rubricAdd && rubricsQuestions > 0 && rubricData) {
+      const userId = currentUser._id;
+
+      // Prepare rubric data for the request
+      const rubricPayload = Object.entries(rubricData).map(([key, value]) => ({
+        userId,
+        question: value.question,
+        weightage: parseFloat(value.weightage), // Ensure weightage is a number
+        keywords: value.keywords,
+        answer: value.answer,
+        processID: "this is 2", // Generate a unique processID
+      }));
+
+      try {
+        // Send rubric data to the backend
+        const response = await fetch("api/rubric/addrubric", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rubricData: rubricPayload }), // Match the expected structure
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log("Rubric added successfully:", result);
+        } else {
+          console.error("Failed to add rubric:", result.message);
+        }
+      } catch (error) {
+        console.error("Error occurred while adding rubric:", error);
+      }
+    }
+  };
+
+  const handleEvaluated = async () => {
+    if (evaluated) {
+      setLoading(true);
+      setEvaluated(false);
+      setProgress(0);
+
+      console.log(rubricData);
+      console.log(imagesData);
+    }
+    await rubricSned();
+   
+  };
 
   // Handle number input with validation
   const handleNumberChange = (e) => {
@@ -38,7 +91,13 @@ export default function Dashboard() {
       alert("Please enter a valid number of questions!");
     }
   };
-  
+
+  // Update qData and ensure rubricData aligns with it
+  useEffect(() => {
+    setRubricData({});
+    setQData({});
+  }, [rubricsQuestions]);
+
   useEffect(() => {
     // Merge qData with rubricData or arrange based on question index
     setRubricData((prevData) => ({
@@ -46,7 +105,7 @@ export default function Dashboard() {
       ...qData, // Merging the new data with the existing data
     }));
   }, [qData]);
-  
+
   // User session verification
   useEffect(() => {
     const verifyUser = async () => {
@@ -173,8 +232,8 @@ export default function Dashboard() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
                       Question {index + 1}
                     </h3>
-                    
-                    <RubricEditer id={index+1} setQData={setQData}/>
+
+                    <RubricEditer id={index + 1} setQData={setQData} />
                   </div>
                 ))}
             </div>
@@ -187,15 +246,7 @@ export default function Dashboard() {
             className={`flex mx-auto text-white bg-gray-700 py-3 px-10 rounded-lg ${
               !evaluated ? "cursor-not-allowed opacity-50" : "hover:bg-gray-950"
             }`}
-            onClick={() => {
-              if (evaluated) {
-                setLoading(true);
-                setEvaluated(false);
-                setProgress(0);
-                console.log(rubricData)
-                console.log(imagesData)
-              }
-            }}
+            onClick={handleEvaluated}
             disabled={!evaluated}
           >
             Evaluate

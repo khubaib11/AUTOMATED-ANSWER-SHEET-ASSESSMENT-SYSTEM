@@ -7,6 +7,7 @@ import cors from 'cors';
 import userRoute from './routes/user.route.js';
 import resultRoute from './routes/result.route.js';
 import cookieParser from 'cookie-parser';
+import rubricRoute from './routes/rubric.route.js';
 
 const app=express();
 app.use(cookieParser())
@@ -29,6 +30,7 @@ app.use(json());
 app.use('/api/auth',auth);
 app.use('/api/user',userRoute);
 app.use('/api/result',resultRoute)
+app.use('/api/rubric',rubricRoute);
 
 
 
@@ -37,6 +39,6 @@ app.use('/api/result',resultRoute)
 
 
 
-app.listen(3000,()=>{
+app.listen(3001,()=>{
     console.log('Server is running on port 3000');
 });

@@ -11,12 +11,15 @@ Provide an example answer for the question.
 • Make sure the example answer aligns with the learning objectives or evaluation criteria for the question.`;
 
   const [data, setData] = useState({
+    question: "",
     weightage: 0,
-    keywords: [],
+    keywords: "",
     answer: "",
   });
+  const [keywordString, setKeywordString] = useState("");
   const [text, setText] = useState("");
   const [keyword, setKeyword] = useState("");
+  const [question, setQuestion] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [addAnswer, setAddAnswer] = useState(false);
   const [editRubric, setEditRubric] = useState(false);
@@ -31,6 +34,7 @@ Provide an example answer for the question.
   );
 
   const header = renderHeader();
+
 
   const handleAddKeyword = () => {
     if (keyword.trim() !== "") {
@@ -48,23 +52,30 @@ Provide an example answer for the question.
   };
 
   const handleSubmit = () => {
+    setKeywordString(keywords.join(", "));
     setData({
+      question,
       weightage: data.weightage,
-      keywords,
+      keywords: keywordString,
       answer: text,
     });
+    if(setData.question === ""){
+      return;
+    }
     setSubmit(true);
     setQData({ ["Question"+id]: data });
     setEditRubric(false);
   };
 
   useEffect(() => {
+    setKeywordString(keywords.join(", "));
     setData({
+      question,
       weightage: data.weightage,
-      keywords,
+      keywords: keywordString,
       answer: text,
     });
-  }, [keywords, text]);
+  }, [keywords, text, question,keywordString]);
 
   // To log data after it updates
   // useEffect(() => {
@@ -79,14 +90,14 @@ Provide an example answer for the question.
         {!editRubric ? (
           <div className="bg-gray-100 border border-gray-300 p-6 rounded-lg shadow-sm flex items-center justify-between">
             <h4 className="text-md font-medium text-gray-700">
-              {(data.weightage > 0 || data.keywords.length > 0 || data.answer) 
+              {(data.question && data.weightage > 0 || data.keywords.length > 0 || data.answer) 
                 ? "Rubric Added Successfully"
                 : " No Rubric Added for this Question"}
             </h4>
             <button
               className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 transition-all"
               onClick={() => {setEditRubric(true)
-                setSubmit(false)
+                setSubmit(false)  
               }}
             >
               Edit
@@ -100,6 +111,26 @@ Provide an example answer for the question.
 
             {/* Weightage Input */}
             <div className="w-full flex flex-col space-y-4">
+
+              <label
+                htmlFor="question"
+                className="text-lg font-medium text-gray-600 text-center sm:text-left"
+              >
+                Required:  Question *
+              </label>
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <input
+                  type="text"
+                  id="question"
+                  name="question"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Enter the question"
+                  className="w-full sm:w-auto sm:flex-1 bg-gray-100 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:border-gray-500 text-gray-700 py-2 px-4"
+                />
+              </div>
+
+
               <label
                 htmlFor="weightage"
                 className="text-lg font-medium text-gray-600 text-center sm:text-left"
@@ -119,9 +150,6 @@ Provide an example answer for the question.
                   placeholder="Enter the marks"
                   className="w-full sm:w-auto sm:flex-1 bg-gray-100 rounded border border-gray-300 focus:ring-2 focus:ring-gray-300 focus:border-gray-500 text-gray-700 py-2 px-4"
                 />
-                <button className="bg-gray-600 text-white py-2 px-6 rounded hover:bg-gray-800 transition-all">
-                  Add
-                </button>
               </div>
             </div>
 
