@@ -3,9 +3,13 @@ import mongoose from "mongoose";
 // Define the rubric schema
 const rubricSchema = new mongoose.Schema(
   {
-    userId: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    questionNo: {
+      type: Number,
       required: true,
     },
     question: {
@@ -20,10 +24,6 @@ const rubricSchema = new mongoose.Schema(
     },
     answer: {
       type: String,
-    },
-    processID: {
-      type: String,
-      required: true,
     },
   },
   { timestamps: true }

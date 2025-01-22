@@ -8,6 +8,10 @@ export const rubricAdd = async (req, res) => {
   }
 
   try {
+    //delete all rubric entries where userId matches
+    await Rubric.deleteMany({ userId: rubricData[0].userId });
+    
+
     // Insert multiple rubric entries
     const result = await Rubric.insertMany(rubricData);
 
