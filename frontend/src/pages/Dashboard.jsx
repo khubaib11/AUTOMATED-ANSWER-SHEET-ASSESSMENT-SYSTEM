@@ -6,6 +6,7 @@ import { signOutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+// import { set } from "mongoose";
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state) => state.user); // Adjust to your Redux-persist structure
@@ -22,20 +23,21 @@ export default function Dashboard() {
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
 
-
   const rubricSned = async () => {
     if (rubricAdd && rubricsQuestions > 0 && rubricData) {
       const userId = currentUser._id;
 
       // Prepare rubric data for the request
-      const rubricPayload = Object.entries(rubricData).map(([key, value]) => ({
-        userId,
-        question: value.question,
-        weightage: parseFloat(value.weightage), // Ensure weightage is a number
-        keywords: value.keywords,
-        answer: value.answer,
-        processID: "this is 2", // Generate a unique processID
-      }));
+      const rubricPayload = Object.entries(rubricData).map(([key, value]) => {
+        return {
+          createdBy: userId,
+          question: value.question,
+          weightage: parseFloat(value.weightage), // Ensure weightage is a number
+          keywords: value.keywords,
+          answer: value.answer,
+          questionNo: value.id || 0, // Ensure questionNo is a number
+        };
+      });
 
       try {
         // Send rubric data to the backend
@@ -70,7 +72,6 @@ export default function Dashboard() {
       console.log(imagesData);
     }
     await rubricSned();
-   
   };
 
   // Handle number input with validation

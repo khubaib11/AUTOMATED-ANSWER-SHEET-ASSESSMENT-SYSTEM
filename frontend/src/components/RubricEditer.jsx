@@ -15,6 +15,7 @@ Provide an example answer for the question.
     weightage: 0,
     keywords: "",
     answer: "",
+    id,
   });
   const [keywordString, setKeywordString] = useState("");
   const [text, setText] = useState("");
@@ -58,6 +59,7 @@ Provide an example answer for the question.
       weightage: data.weightage,
       keywords: keywordString,
       answer: text,
+      id,
     });
     if(setData.question === ""){
       return;
@@ -74,6 +76,7 @@ Provide an example answer for the question.
       weightage: data.weightage,
       keywords: keywordString,
       answer: text,
+      id,
     });
   }, [keywords, text, question,keywordString]);
 
