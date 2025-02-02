@@ -6,25 +6,28 @@ const paperSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-        required: true,
+      required: true,
     },
     studentName: {
-        type: String,
-      },
-      questionNo: {
-        type: Number,
-      },
-      result: {
-        type: String,
-      },
-      submittedAnswerImage: {
-        type: Buffer,  // Stores the image as binary data
-        // type: String,
-        required: true,
-      },
+      type: String,
     },
+    questionNo: {
+      type: Number,
+    },
+    result: {
+      type: String,
+    },
+    submittedAnswerImage: {
+      type: Buffer, // Stores the image as binary data
+      // type: String,
+      required: true,
+    },
+    paperText:{
+      type:String
+    }
+  },
 
-    { timestamps: true }
+  { timestamps: true }
 );
 
 const Paper = mongoose.model("Paper", paperSchema);

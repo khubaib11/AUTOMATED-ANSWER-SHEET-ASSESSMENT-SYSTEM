@@ -6,6 +6,7 @@ import { signOutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 // import { set } from "mongoose";
 
 export default function Dashboard() {
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [evaluated, setEvaluated] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
+  
 
 
   //send image data to the backend
@@ -51,12 +53,34 @@ const sendImageData = async () => {
       // Handle the response
       if (response.ok) {
         console.log("Data sent successfully!");
+       await SaveResults(userId)
       } else {
         console.error("Failed to send data:", await response.text());
       }
     } catch (error) {
       console.error("Error while sending data:", error);
     }
+  }
+};
+
+const SaveResults = async (userId) => {
+  try {
+    const response = await fetch('/api/result/generateResult', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }), // Send as an object
+    });
+
+    // Handle the response
+    if (response.ok) {
+      console.log("Result generated successfully!");
+    } else {
+      console.error("Failed to generate results:", await response.text());
+    }
+  } catch (error) {
+    console.error("Error while generating results:", error);
   }
 };
 
