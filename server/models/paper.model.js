@@ -8,24 +8,18 @@ const paperSchema = new mongoose.Schema(
       ref: "User",
         required: true,
     },
-    studentNo: {
+    studentName: {
         type: String,
-        required: true,
       },
       questionNo: {
         type: Number,
-        required: true,
-      },
-      rubricId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Rubric",
-        required: true,
       },
       result: {
         type: String,
       },
       submittedAnswerImage: {
-        type: String, // Path to the uploaded image of the answer
+        type: Buffer,  // Stores the image as binary data
+        // type: String,
         required: true,
       },
     },

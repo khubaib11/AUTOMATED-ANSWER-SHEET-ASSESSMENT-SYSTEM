@@ -23,6 +23,45 @@ export default function Dashboard() {
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
 
+
+  //send image data to the backend
+// Function to send image data to the backend
+const sendImageData = async () => {
+  if (imagesData) {
+    const userId = currentUser._id; // The ID of the current user
+    try {
+      // Prepare the payload
+      const payload = imagesData.map(imageData => ({
+        createdBy: userId,
+        studentName: imageData.studentName,
+        questionNo: imageData.questionNo,
+        result: imageData.result || "", // Default to empty string if result is missing
+        submittedAnswerImage: Array.from(new Uint8Array(imageData.submittedAnswerImage)), // Convert ArrayBuffer to an array of numbers
+      }));
+
+      // Send the payload to the backend
+      const response = await fetch("/api/paper/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // Convert the payload to JSON format
+      });
+
+      // Handle the response
+      if (response.ok) {
+        console.log("Data sent successfully!");
+      } else {
+        console.error("Failed to send data:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error while sending data:", error);
+    }
+  }
+};
+
+
+  // Send rubric data to the backend
   const rubricSned = async () => {
     if (rubricAdd && rubricsQuestions > 0 && rubricData) {
       const userId = currentUser._id;
@@ -72,6 +111,7 @@ export default function Dashboard() {
       console.log(imagesData);
     }
     await rubricSned();
+    await sendImageData();
   };
 
   // Handle number input with validation

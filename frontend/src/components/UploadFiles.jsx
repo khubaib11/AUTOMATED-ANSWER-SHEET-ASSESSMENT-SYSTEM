@@ -15,40 +15,84 @@ export default function UploadFiles({ setEvaluated, setLoading, setShowDoc,setIm
     }
   }, [fileSummary]);
 
-  const handleFileProcessing = (files) => {
-    const validTypes = ["image/png", "image/jpeg" ];
-    const organizedData = {};
-    let isValid = true;
-
+  const handleFileProcessing = async (files) => {
+    const validTypes = ["image/png", "image/jpeg"];
+    const organizedData = {}; // To store files categorized by folders
+    let isValid = true; // To ensure all files are of valid types
+    const papers = []; // Array to store structured data for MongoDB
+  
+    // Step 1: Organize files by folder structure
     Array.from(files).forEach((file) => {
       if (!validTypes.includes(file.type)) {
         isValid = false;
         return;
       }
-
+  
+      // Extract the relative path (e.g., folder/subfolder/file.png)
       const pathParts = file.webkitRelativePath?.split("/") || [];
-      const studentFolder = pathParts[1] || "Ungrouped";
-      if (!organizedData[studentFolder]) {
-        organizedData[studentFolder] = [];
+      let key;
+  
+      if (pathParts.length === 1) {
+        // Single image upload (no folder structure)
+        key = "Ungrouped";
+      } else if (pathParts.length === 2) {
+        // Single folder of images
+        key = pathParts[0];
+      } else {
+        // Folder of folders (nested structure)
+        key = pathParts.slice(0, -1).join("/");
       }
-      organizedData[studentFolder].push(file);
+  
+      // Organize files by folder key
+      if (!organizedData[key]) {
+        organizedData[key] = [];
+      }
+      organizedData[key].push(file);
     });
-
+  
     if (!isValid) {
-      setErrorMessage(
-        "Invalid file types. Only PNG, JPEG are allowed."
-      );
+      setErrorMessage("Invalid file types. Only PNG, JPEG are allowed.");
       setEvaluated(false);
       return;
     }
-
+  
+    // Step 2: Convert organized data into MongoDB schema format
+    for (const [folderName, images] of Object.entries(organizedData)) {
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        const reader = new FileReader();
+  
+        // Wrap FileReader in a Promise
+        const bufferPromise = new Promise((resolve, reject) => {
+          reader.onloadend = () => {
+            resolve(reader.result); // Convert to Buffer
+          };
+          reader.onerror = () => {
+            reject("Error reading file");
+          };
+          reader.readAsArrayBuffer(image);
+        });
+  
+        const buffer = await bufferPromise;
+        //split folder name to get student name
+        const studentName = folderName.split("/").pop();
+  
+        papers.push({
+          studentName: studentName, // Use folder name as studentName
+          questionNo: i + 1, // Sequential question number starting from 1
+          result: "", // Empty result field
+          submittedAnswerImage: buffer, // Image as binary Buffer
+        });
+      }
+    }
+  
     setErrorMessage("");
-    setFileSummary(organizedData);
+    setFileSummary(papers); // Set data for backend upload
     setEvaluated(true);
     setLoading(false);
     setShowDoc(false);
   };
-
+  
   const handleFileUpload = (e) => {
     const files = e.target.files;
     if (files.length === 0) {
