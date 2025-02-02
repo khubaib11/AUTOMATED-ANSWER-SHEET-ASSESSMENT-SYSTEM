@@ -93,60 +93,70 @@ const getResult = async (model, generationConfig, text, rubrics) => {
     });
 
     const prompt = `
-**Rubric-Based Assessment System – Strict Matching**  
-
-**Instructions:**  
-
-1. **Find the correct rubric** by matching the student's question with the "questionNo" or "question" field.  
-2. **If a matching rubric is found, ONLY evaluate based on it.**  
-   - ✅ **Check for keywords and expected answer EXACTLY as listed.**  
-   - ❌ **Do NOT add extra missing points or use external knowledge.**  
-3. **If no rubric exists for the question, use general knowledge and score fairly out of 5.**  
-4. **Reward correctness and partial correctness generously**—small phrasing differences should not affect scoring.  
-
----
-
-### **Student Answer:**  
-[${text}]  
-
-### **Available Rubric Data:**  
-\`\`\`  
-${rubrics}  
-\`\`\`  
-
----
-
-### **Evaluation Process:**  
-- **Step 1:** Find a rubric that exactly matches the question.  
-- **Step 2:**  
-   - ✅ **If a matching rubric exists:**  
-     - Check if the answer includes the rubric’s **expected answer** or **keywords**.  
-     - If it matches, mark it **correct** and **do not add unnecessary missing points**.  
-   - ❌ **If no rubric exists:**  
-     - Use general knowledge and assign a fair score out of **5**.  
-- **Step 3:** Avoid unnecessary deductions.  
-- **Step 4:** Provide structured feedback, focusing only on major errors.  
-
----
-
-### **Expected Deliverables:**  
-- **Score (out of total):** [If rubric exists, use rubric-based score. If not, provide a fair score out of 5.]  
-- **Correct Answer Check:** [Yes / No / Partially Correct]  
-- **Missing Points:** [Only list if the rubric explicitly requires them.]  
-- **Wrong Points:** [Only if the answer contradicts the rubric—do not nitpick minor errors.]  
-
----
-
-### **Important Notes:**  
-✅ **Strictly follow the rubric—do not add extra missing points.**  
-✅ **If the answer contains the rubric’s expected answer or keywords, it is correct.**  
-✅ **If the wording differs slightly but conveys the same meaning, still consider it correct.**  
-✅ **Do NOT penalize small grammar mistakes or alternative phrasing.**  
-✅ **If no rubric exists, provide a reasonable score out of 5 using general knowledge.**  
-
-**Provide a structured, fair, and concise assessment.**  
-`;
-
+    **Rubric-Based Assessment System – Strict Matching**  
+    
+    **Instructions:**  
+    
+    1. **Find the correct rubric** by matching the student's question with the "questionNo" or "question" field.  
+       - If the question matches the rubric's question or number, proceed to step 2.
+    2. **If a matching rubric is found, ONLY evaluate based on it.**
+       - ✅ **Strictly check for the rubric's keywords and expected answer.**  
+       - ❌ **Do NOT add extra missing points or use external knowledge.**
+    3. **If no rubric exists for the question, use your general knowledge to evaluate the answer fairly out of 5.** 
+       - If the rubric doesn’t match the question, treat the answer as a new question and apply general knowledge.
+    4. **Reward correctness and partial correctness generously.**  
+       - Small phrasing differences that don’t change the meaning should not affect the score.
+       - If a student has a correct overall idea but minor phrasing differences, still consider it correct.
+    
+    ---
+    
+    ### **Student Answer:**  
+    [${text}]  
+    
+    ### **Available Rubric Data:**  
+    \`\`\`  
+    ${rubrics}  
+    \`\`\`  
+    
+    ---
+    
+    ### **Evaluation Process:**  
+    - **Step 1:** Check if the rubric matches the question.  
+       - ✅ If the rubric question or number matches the student's question, proceed with rubric-based evaluation.
+       - ❌ If the rubric doesn't match, use general knowledge to evaluate the answer.  
+    - **Step 2:**  
+       - ✅ **If a matching rubric exists:**  
+         - Check if the student’s answer includes the rubric’s **expected answer** or **keywords**.
+         - If the student's answer contains the expected answer or keywords, mark it **correct**.
+         - If the student’s answer partially matches, give partial credit based on how much of the rubric is covered.
+       - ❌ **If no rubric exists:**  
+         - Use general knowledge and score fairly out of **5**, based on how correct or reasonable the answer is.
+    - **Step 3:** Avoid unnecessary deductions. Only focus on major mistakes or inconsistencies.  
+    - **Step 4:** Provide structured feedback, focusing only on key errors. Avoid being overly critical of small mistakes.
+    
+    ---
+    
+    ### **Expected Deliverables:**  
+    - **Score (out of total):** [If rubric exists, use the rubric-based score. If not, provide a fair score out of 5.]  
+    - **Correct Answer Check:** [Yes / No / Partially Correct]  
+    - **Missing Points:** [List missing points only if they are explicitly required by the rubric.]
+    - **Wrong Points:** [Only list if the answer contradicts the rubric. Do not nitpick minor errors.]  
+    
+    ---
+    
+    ### **Important Notes:**  
+    ✅ **Strictly follow the rubric if it exists. Do not add extra missing points.**  
+    ✅ **If the answer includes the rubric’s expected answer or keywords, it is correct, even if the phrasing differs slightly.**  
+    ✅ **Do NOT penalize small grammar mistakes or alternative phrasing.**  
+    ✅ **If no rubric exists for the question, provide a reasonable score out of 5 using general knowledge.**  
+    ✅ **If the rubric is for a different question, evaluate based on your knowledge.**  
+    ✅ **If no rubric is provided, use general knowledge to evaluate the answer fairly.**
+    
+    **Provide a fair, structured, and concise assessment.**  
+    
+    ---
+    `;
+    
     // Send the prompt
     const result = await chatSession.sendMessage(prompt);
 
