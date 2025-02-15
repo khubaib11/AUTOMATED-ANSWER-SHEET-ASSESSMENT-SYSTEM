@@ -2,8 +2,20 @@ import path from "path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Rubric from "../models/rubric.model.js";
 import Paper from "../models/paper.model.js";
+import fs from "fs";
 
 
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  Table,
+  TableRow,
+  TableCell,
+  WidthType,
+  AlignmentType,
+} from "docx";
 
 const result = (req, res) => {
     const __dirname = path.resolve('/home/khubaib/Programing/Projects/AUTOMATED ANSWER SHEET ASSESSMENT SYSTEM/server');
@@ -77,12 +89,317 @@ const GenerateResults = async (req, res) => {
     // Insert newly processed papers
     await Paper.insertMany(processedPapers);
 
+    const Prospapers = processedPapers.map((paper) => ({
+      studentName: paper.studentName,
+      questionNo: paper.questionNo,
+      result: paper.result,
+      paperText: paper.paperText,
+    }));
+
+    // Generate final results
+    await FinalResult(model,generationConfig,Prospapers);
+
     res.status(200).json({ message: "Results generated successfully", processedPapers });
   } catch (error) {
     console.error("Error generating results:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+async function FinalResult(model,generationConfig,papers) {
+  try {
+    // Start the chat session
+    const chatSession = model.startChat({
+      generationConfig,
+      history: [],
+    });
+    const prompt = `
+    Generate a structured JSON array containing the mark sheet details for all students based on the provided answers and do not add any notes or instructions from yourself, just return a JSON array.
+    
+    Input Data:
+    ${JSON.stringify(papers)}
+    
+    Expected JSON Output Format:
+    [
+        {
+            "name": "Student Name",
+            "totalMarks": Total Marks,
+            "attemptedQuestions": Total Questions Attempted,
+            "scores": [
+                {
+                    "question": Question Number,
+                    "score": Score Awarded,
+                    "correctness": "Yes/No"
+                }
+            ],
+            "missingPoints": ["List of missing points per question"],
+            "wrongPoints": ["List of wrong points per question"],
+            "fullAnswers": [
+                {
+                    "question": Question Number,
+                    "answer": "Full Question and  answer provided by the student all the text which is in paperText"
+                }
+            ]
+        }
+    ]
+    
+    Ensure the response is **valid JSON only** without extra symbols, formatting characters, or explanations.
+    `;
+       
+
+    // Send the prompt
+    const result = await chatSession.sendMessage(prompt);
+
+    // Log the candidates array directly to inspect its structure
+    if (result ) {
+      
+      const resultText = result.response.text().trim();
+      const cleanedJSON = resultText.replace(/```json|```/g, "").trim();
+      const parsedData = JSON.parse(cleanedJSON);
+
+      const doc = new Document({
+        sections: [
+          {
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: "Mark Sheet",
+                    bold: true,
+                    size: 44,
+                    
+                  }),
+                ],
+                spacing: { after: 500 },
+                alignment: AlignmentType.CENTER,
+              }),
+
+              new Paragraph({
+                text: "Summary Table:",
+                bold: true,
+                size: 30,
+                spacing: { after: 300 },
+              }),
+
+              new Table({
+                width: { size: 100, type: WidthType.PERCENTAGE },
+                rows: [
+                  new TableRow({
+                    children: [
+                      new TableCell({
+                        children: [
+                          new Paragraph({
+                            text: "Student Name",
+                            bold: true,
+                            size: 24,
+                          }),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph({
+                            text: "Total Marks",
+                            bold: true,
+                            size: 24,
+                          }),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph({
+                            text: "Questions Attempted",
+                            bold: true,
+                            size: 24,
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                  ...parsedData.map(
+                    (student, index) =>
+                      new TableRow({
+                        children: [
+                          new TableCell({
+                            children: [new Paragraph(student.name)],
+                          }),
+                          new TableCell({
+                            children: [
+                              new Paragraph(student.totalMarks.toString()),
+                            ],
+                          }),
+                          new TableCell({
+                            children: [
+                              new Paragraph(
+                                student.attemptedQuestions.toString()
+                              ),
+                            ],
+                          }),
+                        ],
+                        shading: index % 2 === 0 ? { fill: "E8E8E8" } : {},
+                      })
+                  ),
+                ],
+              }),
+
+              ...parsedData.flatMap((student) => [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: `\nStudent Name: ${student.name}`,
+                      bold: true,
+                      size: 24,
+                      
+                    }),
+                  ],
+                  spacing: { before: 400, after: 200 },
+                }),
+
+                new Table({
+                  width: { size: 100, type: WidthType.PERCENTAGE },
+                  rows: [
+                    new TableRow({
+                      children: [
+                        new TableCell({
+                          children: [
+                            new Paragraph({
+                              text: "Question No",
+                              bold: true,
+                              size: 22,
+                            }),
+                          ],
+                        }),
+                        new TableCell({
+                          children: [
+                            new Paragraph({
+                              text: "Score",
+                              bold: true,
+                              size: 22,
+                            }),
+                          ],
+                        }),
+                        new TableCell({
+                          children: [
+                            new Paragraph({
+                              text: "Correctness",
+                              bold: true,
+                              size: 22,
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    ...student.scores.map(
+                      (score, index) =>
+                        new TableRow({
+                          children: [
+                            new TableCell({
+                              children: [
+                                new Paragraph(score.question.toString()),
+                              ],
+                            }),
+                            new TableCell({
+                              children: [new Paragraph(score.score.toString())],
+                            }),
+                            new TableCell({
+                              children: [new Paragraph(score.correctness)],
+                            }),
+                          ],
+                          shading: index % 2 === 0 ? { fill: "F5F5F5" } : {},
+                        })
+                    ),
+                  ],
+                }),
+
+                new Paragraph({
+                  text: "\nMissing Points:",
+                  bold: true,
+                  size: 22,
+                }),
+                ...student.missingPoints.map(
+                  (point) =>
+                    new Paragraph({
+                      text: point || "-",
+                      size: 20,
+                      spacing: { after: 100 },
+                    })
+                ),
+
+                new Paragraph({
+                  text: "\nWrong Points:",
+                  bold: true,
+                  size: 22,
+                }),
+                ...student.wrongPoints.map(
+                  (point) =>
+                    new Paragraph({
+                      text: point || "-",
+                      size: 20,
+                      spacing: { after: 100 },
+                    })
+                ),
+
+                new Paragraph({
+                  text: `\nTotal Marks: ${student.totalMarks}`,
+                  size: 24,
+                  bold: true,
+                  spacing: { after: 300 },
+                }),
+                new Paragraph({
+                  text: `Total Questions Attempted: ${student.attemptedQuestions}`,
+                  size: 24,
+                  bold: true,
+                  spacing: { after: 300 },
+                }),
+
+                new Paragraph({
+                  text: "\nFull Answers:",
+                  bold: true,
+                  size: 26,
+                  spacing: { after: 200 },
+                }),
+               
+                ...student.fullAnswers.flatMap((answer) => [
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: `Image Text`,
+                        bold: true,
+                        size: 22,
+                      }),
+                    ],
+                    spacing: { after: 200 },
+                  }),
+                  new Paragraph({
+                    text: answer.answer,
+                    size: 20,
+                    indent: { left: 720 },
+                    spacing: { after: 300 },
+                  }),
+                ]),
+               
+              ]),
+            ],
+          },
+        ],
+      });
+
+      Packer.toBuffer(doc).then((buffer) => {
+        fs.writeFileSync("../server/data/result.docx", buffer);
+        console.log("Mark sheet generated successfully!");
+      });
+
+      
+      console.log( "file created");
+    } else {
+      console.error("No valid response from the model.");
+    }
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
 
 const getResult = async (model, generationConfig, text, rubrics) => {
   try {

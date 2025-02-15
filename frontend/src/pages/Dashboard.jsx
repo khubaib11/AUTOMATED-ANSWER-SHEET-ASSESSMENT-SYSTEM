@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [evaluated, setEvaluated] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
+  const [finalResult, setFinalResult] = useState(false);
   
 
 
@@ -75,6 +76,7 @@ const SaveResults = async (userId) => {
 
     // Handle the response
     if (response.ok) {
+      setFinalResult(true);
       console.log("Result generated successfully!");
     } else {
       console.error("Failed to generate results:", await response.text());
@@ -194,25 +196,43 @@ const SaveResults = async (userId) => {
   // Progress bar simulation
   useEffect(() => {
     let interval;
-
+    let timeout;
+  
     if (loading) {
       interval = setInterval(() => {
         setProgress((prev) => {
-          const nextProgress = prev + 10;
+          const nextProgress = prev + 2; // Slow down progress to last for 5 minutes
           if (nextProgress >= 100) {
             clearInterval(interval);
-            setProgress(100);
-            setLoading(false);
-            setShowDoc(true);
+            return 100;
           }
           return Math.min(nextProgress, 100);
         });
-      }, 500);
+      }, 6000); // 2% increase every 6 seconds (100% in ~5 minutes)
+  
+      // Timeout after 5 minutes if `finalResult` is still false
+      timeout = setTimeout(() => {
+        if (!finalResult) {
+          clearInterval(interval);
+          setLoading(false);
+          console.error("Error: Result generation timed out.");
+        }
+      }, 300000); // 5 minutes timeout
     }
-
-    return () => clearInterval(interval); // Cleanup interval
-  }, [loading]);
-
+  
+    if (finalResult) {
+      clearInterval(interval);
+      setProgress(100);
+      setLoading(false);
+      setShowDoc(true);
+    }
+  
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [loading, finalResult]);
+  
   return (
     <section className="text-gray-700 body-font bg-gray-50 min-h-screen">
       <div className="container px-5 py-16 mx-auto">

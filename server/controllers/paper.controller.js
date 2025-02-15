@@ -41,6 +41,7 @@ const paperAdd = async (req, res) => {
     // Remove previous papers from the same creator
     await Paper.deleteMany({ createdBy: user });
 
+
     // Process images to extract text
     const processedPapers = await Promise.all(
       papers.map(async (paper) => {
