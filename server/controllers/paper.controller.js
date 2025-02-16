@@ -22,6 +22,7 @@ const imagetoText = async (imageBuffer) => {
         },
       ],
     });
+    
 
     return response.choices?.[0]?.message?.content || "";
   } catch (error) {

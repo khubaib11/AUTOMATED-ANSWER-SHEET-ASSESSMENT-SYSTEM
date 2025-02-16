@@ -34,7 +34,7 @@ export default function UploadFiles({ setEvaluated, setLoading, setShowDoc,setIm
   
       if (pathParts.length === 1) {
         // Single image upload (no folder structure)
-        key = "Ungrouped";
+        key = "Not Available";
       } else if (pathParts.length === 2) {
         // Single folder of images
         key = pathParts[0];

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { renderAsync } from "docx-preview";
 
-export default function DocxViewer2() {
+export default function DocxViewer2({id}) {
   const viewerElement = useRef(null);
   const [preview, setPreview] = useState(false);
+  
 
   const blobToArrayBuffer = (blob) =>
     new Promise((resolve, reject) => {
@@ -13,23 +14,33 @@ export default function DocxViewer2() {
       reader.readAsArrayBuffer(blob);
     });
 
-  const fetchAndRenderDoc = async () => {
-    setPreview(true);
-    try {
-      const response = await fetch("/api/result/file.docx");
-      if (!response.ok) throw new Error("Failed to fetch document");
-
-      const blob = await response.blob();
-      const arrayBuffer = await blobToArrayBuffer(blob);
-
-      if (viewerElement.current) {
-        await renderAsync(arrayBuffer, viewerElement.current);
+    const fetchAndRenderDoc = async () => {
+      if (!id) {
+        console.error("File ID is required");
+        return;
       }
-    } catch (error) {
-      console.error("Error during document rendering:", error);
-    }
-  };
-
+    
+      setPreview(true);
+      try {
+        const response = await fetch("/api/result/file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }), // Sending file ID in request body
+        });
+    
+        if (!response.ok) throw new Error("Failed to fetch document");
+    
+        const blob = await response.blob();
+        const arrayBuffer = await blobToArrayBuffer(blob);
+    
+        if (viewerElement.current) {
+          await renderAsync(arrayBuffer, viewerElement.current);
+        }
+      } catch (error) {
+        console.error("Error during document rendering:", error);
+      }
+    };
+    
   useEffect(() => {
     if (preview && viewerElement.current) {
       fetchAndRenderDoc();
@@ -37,15 +48,31 @@ export default function DocxViewer2() {
   }, [preview]);
 
   const downloadFile = async () => {
+    if (!id) {
+      console.error("File ID is required");
+      return;
+    }
+  
     try {
-      const response = await fetch("/api/result/file.docx");
+      const response = await fetch("/api/result/file", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }), // Send ID in request body
+      });
+  
       if (!response.ok) throw new Error("Failed to fetch file");
-
+  
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "result.docx";
+  
+      // Get the correct filename from Content-Disposition header
+      const contentDisposition = response.headers.get("Content-Disposition");
+      const filenameMatch = contentDisposition?.match(/filename="(.+?)"/);
+      const filename = filenameMatch ? filenameMatch[1] : "result.docx";
+  
+      link.download = filename; // Set filename dynamically
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -54,7 +81,7 @@ export default function DocxViewer2() {
       console.error("Error during file download:", error);
     }
   };
-
+    
   return (
     <div className="flex flex-col items-center justify-center h-auto bg-gray-50 p-4">
       <div className="flex space-x-4 mt-4">

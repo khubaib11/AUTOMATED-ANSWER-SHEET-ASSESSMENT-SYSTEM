@@ -2,7 +2,8 @@ import path from "path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Rubric from "../models/rubric.model.js";
 import Paper from "../models/paper.model.js";
-import fs from "fs";
+import Result from "../models/result.model.js";
+import mongoose from "mongoose"; // Import mongoose to use ObjectId conversion
 
 
 import {
@@ -17,25 +18,42 @@ import {
   AlignmentType,
 } from "docx";
 
-const result = (req, res) => {
-    const __dirname = path.resolve('/home/khubaib/Programing/Projects/AUTOMATED ANSWER SHEET ASSESSMENT SYSTEM/server');
-    const filePath = path.join(__dirname, 'data', 'result.docx');
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    res.setHeader('Cache-Control', 'no-store'); // Disable caching
-    
-    res.sendFile(filePath, (err) => {
-      if (err) {
-        console.error('Error sending the file:', err);
-        res.status(500).send('File rendering failed');
-      }
-    });
-}
+
+const result = async (req, res) => {
+  try {
+    const { id } = req.body; // Get user ID from request body
+
+    if (!id) return res.status(400).json({ error: "User ID is required" });
+
+    // Convert ID to ObjectId
+    const objectId = new mongoose.Types.ObjectId(id);
+
+    // Find file by `createdBy` field
+    const fileRecord = await Result.findOne({ createdBy: objectId });
+
+    if (!fileRecord || !fileRecord.file) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    res.setHeader("Content-Type", fileRecord.file.contentType || "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    res.setHeader("Content-Disposition", `attachment; filename="${fileRecord.file.filename || "result.docx"}"`);
+    res.setHeader("Cache-Control", "no-store");
+
+    res.send(fileRecord.file.data);
+  } catch (error) {
+    console.error("Error retrieving the file:", error);
+    res.status(500).json({ error: "File retrieval failed" });
+  }
+};
 
 const GenerateResults = async (req, res) => {
   try {
     const user = req.body.userId;
+    const rubricsCheck=req.body.rubricsCheck;
     const allPapers = await Paper.find({ createdBy: user });
-    const allRubrics = await Rubric.find({ createdBy: user });
+    
+    
+
 
     const apiKey = process.env.GEMINI_API;
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -51,15 +69,23 @@ const GenerateResults = async (req, res) => {
       maxOutputTokens: 8192,
       responseMimeType: "text/plain",
     };
+    
+    let rubricsString = [];
+
+    if(rubricsCheck){
+
+     const allRubrics = await Rubric.find({ createdBy: user });
 
     // Convert rubrics to a structured format
-    let rubricsString = allRubrics.map((rubric) => ({
+       rubricsString = allRubrics.map((rubric) => ({
       questionNo: rubric.questionNo,
       question: rubric.question,
       weightage: rubric.weightage,
       keywords: rubric.keywords,
       answer: rubric.answer,
     }));
+
+    }
 
     // Process papers asynchronously
     const processedPapers = await Promise.all(
@@ -97,7 +123,7 @@ const GenerateResults = async (req, res) => {
     }));
 
     // Generate final results
-    await FinalResult(model,generationConfig,Prospapers);
+    await FinalResult(model,generationConfig,Prospapers,user);
 
     res.status(200).json({ message: "Results generated successfully", processedPapers });
   } catch (error) {
@@ -107,7 +133,7 @@ const GenerateResults = async (req, res) => {
 };
 
 
-async function FinalResult(model,generationConfig,papers) {
+async function FinalResult(model,generationConfig,papers,userId) {
   try {
     // Start the chat session
     const chatSession = model.startChat({
@@ -384,12 +410,25 @@ async function FinalResult(model,generationConfig,papers) {
         ],
       });
 
-      Packer.toBuffer(doc).then((buffer) => {
-        fs.writeFileSync("../server/data/result.docx", buffer);
-        console.log("Mark sheet generated successfully!");
-      });
+      //delete previous result from the same creator
+      await Result.deleteMany({ createdBy: userId });
 
+      Packer.toBuffer(doc).then(async (buffer) => {
+        try {
+          const newFile = new Result({
+             createdBy:userId,
+            file: {
+              data: buffer,
+              contentType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            },
+          });
       
+          await newFile.save();
+          console.log("Mark sheet saved to MongoDB successfully!");
+        } catch (error) {
+          console.error("Error saving file to MongoDB:", error);
+        }
+      });
       console.log( "file created");
     } else {
       console.error("No valid response from the model.");

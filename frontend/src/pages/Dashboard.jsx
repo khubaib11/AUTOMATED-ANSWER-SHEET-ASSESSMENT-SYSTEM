@@ -71,7 +71,7 @@ const SaveResults = async (userId) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId }), // Send as an object
+      body: JSON.stringify({ userId,rubricsCheck:(rubricAdd&&rubricsQuestions > 0 && rubricData)  }), // Send as an object
     });
 
     // Handle the response
@@ -130,16 +130,16 @@ const SaveResults = async (userId) => {
   const handleEvaluated = async () => {
     if (evaluated) {
       setLoading(true);
-      setEvaluated(false);
       setProgress(0);
-
-      console.log(rubricData);
-      console.log(imagesData);
+      setFinalResult(false); // Ensure finalResult resets
+  
+      console.log("Evaluating with data:", rubricData, imagesData);
+      
+      await rubricSned();
+      await sendImageData();
     }
-    await rubricSned();
-    await sendImageData();
   };
-
+  
   // Handle number input with validation
   const handleNumberChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -192,25 +192,24 @@ const SaveResults = async (userId) => {
 
     verifyUser();
   }, [dispatch, navigate]);
-
-  // Progress bar simulation
   useEffect(() => {
     let interval;
     let timeout;
   
     if (loading) {
+      setProgress(0); // Reset progress when loading starts
+  
       interval = setInterval(() => {
         setProgress((prev) => {
-          const nextProgress = prev + 2; // Slow down progress to last for 5 minutes
+          const nextProgress = prev + 2;
           if (nextProgress >= 100) {
             clearInterval(interval);
             return 100;
           }
-          return Math.min(nextProgress, 100);
+          return nextProgress;
         });
       }, 6000); // 2% increase every 6 seconds (100% in ~5 minutes)
   
-      // Timeout after 5 minutes if `finalResult` is still false
       timeout = setTimeout(() => {
         if (!finalResult) {
           clearInterval(interval);
@@ -232,7 +231,7 @@ const SaveResults = async (userId) => {
       clearTimeout(timeout);
     };
   }, [loading, finalResult]);
-  
+    
   return (
     <section className="text-gray-700 body-font bg-gray-50 min-h-screen">
       <div className="container px-5 py-16 mx-auto">
@@ -355,7 +354,7 @@ const SaveResults = async (userId) => {
             </div>
           </div>
         ) : showDoc ? (
-          <DocxViewer />
+          <DocxViewer  id={currentUser._id}/>
         ) : null}
       </div>
     </section>
