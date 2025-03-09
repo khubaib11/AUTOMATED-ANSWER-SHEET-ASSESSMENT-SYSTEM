@@ -150,7 +150,7 @@ async function FinalResult(model,generationConfig,papers,userId) {
     [
         {
             "name": "Student Name",
-            "totalMarks": Total Marks,
+            "totalMarks": Total  Obtain  Student Marks,
             "attemptedQuestions": Total Questions Attempted,
             "scores": [
                 {
