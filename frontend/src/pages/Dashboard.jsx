@@ -6,6 +6,7 @@ import { signOutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Dropdown from "../components/Dropdown";
 
 // import { set } from "mongoose";
 
@@ -24,68 +25,86 @@ export default function Dashboard() {
   const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
   const [finalResult, setFinalResult] = useState(false);
-  
-
+  const [selectedModel, setSelectedModel] = useState("Llama-3.2-11B");
 
   //send image data to the backend
-// Function to send image data to the backend
-const sendImageData = async () => {
-  if (imagesData) {
-    const userId = currentUser._id; // The ID of the current user
+  // Function to send image data to the backend
+  const sendImageData = async () => {
+    if (!Array.isArray(imagesData) || imagesData.length === 0) {
+      console.warn("No valid imagesData to send.");
+      return;
+    }
+
+    const userId = currentUser?._id;
+    if (!userId) {
+      console.error("User ID is missing!");
+      return;
+    }
+
     try {
-      // Prepare the payload
-      const payload = imagesData.map(imageData => ({
+      const convertToBase64 = (arrayBuffer) => {
+        let binary = "";
+        const bytes = new Uint8Array(arrayBuffer);
+        bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
+        return btoa(binary);
+      };
+
+      // Convert images to base64 format
+      const payload = imagesData.map((imageData) => ({
         createdBy: userId,
-        studentName: imageData.studentName,
-        questionNo: imageData.questionNo,
-        result: imageData.result || "", // Default to empty string if result is missing
-        submittedAnswerImage: Array.from(new Uint8Array(imageData.submittedAnswerImage)), // Convert ArrayBuffer to an array of numbers
+        selectedModel: selectedModel,
+        studentName: imageData?.studentName || "Unknown",
+        result: imageData?.result || "",
+        submittedAnswerImages: Array.isArray(imageData?.submittedAnswerImages)
+          ? imageData.submittedAnswerImages.map((buffer) =>
+              convertToBase64(buffer)
+            )
+          : [],
       }));
 
-      // Send the payload to the backend
       const response = await fetch("/api/paper/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload), // Convert the payload to JSON format
+        body: JSON.stringify(payload),
       });
 
-      // Handle the response
       if (response.ok) {
-        console.log("Data sent successfully!");
-       await SaveResults(userId)
+        console.log("Data sent successfully!", payload);
+        await SaveResults(userId);
       } else {
         console.error("Failed to send data:", await response.text());
       }
     } catch (error) {
       console.error("Error while sending data:", error);
     }
-  }
-};
+  };
 
-const SaveResults = async (userId) => {
-  try {
-    const response = await fetch('/api/result/generateResult', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId,rubricsCheck:(rubricAdd&&rubricsQuestions > 0 && rubricData)  }), // Send as an object
-    });
+  const SaveResults = async (userId) => {
+    try {
+      const response = await fetch("/api/result/generateResult", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          rubricsCheck: rubricAdd && rubricsQuestions > 0 && rubricData,
+        }), // Send as an object
+      });
 
-    // Handle the response
-    if (response.ok) {
-      setFinalResult(true);
-      console.log("Result generated successfully!");
-    } else {
-      console.error("Failed to generate results:", await response.text());
+      // Handle the response
+      if (response.ok) {
+        setFinalResult(true);
+        console.log("Result generated successfully!");
+      } else {
+        console.error("Failed to generate results:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error while generating results:", error);
     }
-  } catch (error) {
-    console.error("Error while generating results:", error);
-  }
-};
-
+  };
 
   // Send rubric data to the backend
   const rubricSned = async () => {
@@ -132,14 +151,14 @@ const SaveResults = async (userId) => {
       setLoading(true);
       setProgress(0);
       setFinalResult(false); // Ensure finalResult resets
-  
+
       console.log("Evaluating with data:", rubricData, imagesData);
-      
+
       await rubricSned();
       await sendImageData();
     }
   };
-  
+
   // Handle number input with validation
   const handleNumberChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -195,10 +214,10 @@ const SaveResults = async (userId) => {
   useEffect(() => {
     let interval;
     let timeout;
-  
+
     if (loading) {
       setProgress(0); // Reset progress when loading starts
-  
+
       interval = setInterval(() => {
         setProgress((prev) => {
           const nextProgress = prev + 2;
@@ -209,7 +228,7 @@ const SaveResults = async (userId) => {
           return nextProgress;
         });
       }, 6000); // 2% increase every 6 seconds (100% in ~5 minutes)
-  
+
       timeout = setTimeout(() => {
         if (!finalResult) {
           clearInterval(interval);
@@ -218,20 +237,20 @@ const SaveResults = async (userId) => {
         }
       }, 300000); // 5 minutes timeout
     }
-  
+
     if (finalResult) {
       clearInterval(interval);
       setProgress(100);
       setLoading(false);
       setShowDoc(true);
     }
-  
+
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
   }, [loading, finalResult]);
-    
+
   return (
     <section className="text-gray-700 body-font bg-gray-50 min-h-screen">
       <div className="container px-5 py-16 mx-auto">
@@ -249,6 +268,13 @@ const SaveResults = async (userId) => {
               Kindly Follow the Upload Rules and Guidelines.
             </span>
           </p>
+
+          <div className="p-4">
+            <Dropdown setDropdownValue={setSelectedModel} />
+            <p className="mt-4">
+              Selected OCR Model: <strong>{selectedModel}</strong>
+            </p>
+          </div>
         </div>
 
         {/* File Upload */}
@@ -354,7 +380,7 @@ const SaveResults = async (userId) => {
             </div>
           </div>
         ) : showDoc ? (
-          <DocxViewer  id={currentUser._id}/>
+          <DocxViewer id={currentUser._id} />
         ) : null}
       </div>
     </section>

@@ -16,6 +16,7 @@
     "docx-preview": "^0.3.3",
     "firebase": "^11.0.2",
     "flowbite-react": "^0.10.2",
+    "lucide-react": "^0.487.0",
     "mammoth": "^1.8.0",
     "primereact": "^10.8.5",
     "quill": "^2.0.3",

@@ -100,10 +100,9 @@ const GenerateResults = async (req, res) => {
         return {
           createdBy: paper.createdBy,
           studentName: paper.studentName,
-          questionNo: paper.questionNo,
           result: result, // Store the evaluated result properly
           paperText: paper.paperText, // Added missing assignment
-          submittedAnswerImage: paper.submittedAnswerImage, // Keep original base64
+          submittedAnswerImage: paper.submittedAnswerImages, // Keep original base64
         };
       })
     );
@@ -150,7 +149,8 @@ async function FinalResult(model,generationConfig,papers,userId) {
     [
         {
             "name": "Student Name",
-            "totalMarks": Total  Obtain  Student Marks,
+            "totalMarks": Total weightage Marks,
+            "obtainMarks": Total  Obtain  Student Marks,
             "attemptedQuestions": Total Questions Attempted,
             "scores": [
                 {
@@ -234,6 +234,15 @@ async function FinalResult(model,generationConfig,papers,userId) {
                       new TableCell({
                         children: [
                           new Paragraph({
+                            text: "Obtain Marks",
+                            bold: true,
+                            size: 24,
+                          }),
+                        ],
+                      }),
+                      new TableCell({
+                        children: [
+                          new Paragraph({
                             text: "Questions Attempted",
                             bold: true,
                             size: 24,
@@ -252,6 +261,11 @@ async function FinalResult(model,generationConfig,papers,userId) {
                           new TableCell({
                             children: [
                               new Paragraph(student.totalMarks.toString()),
+                            ],
+                          }),
+                          new TableCell({
+                            children: [
+                              new Paragraph(student.obtainMarks.toString()),
                             ],
                           }),
                           new TableCell({
@@ -372,6 +386,12 @@ async function FinalResult(model,generationConfig,papers,userId) {
                   spacing: { after: 300 },
                 }),
                 new Paragraph({
+                  text: `\nObtain Marks: ${student.totalMarks}`,
+                  size: 24,
+                  bold: true,
+                  spacing: { after: 300 },
+                }),
+                new Paragraph({
                   text: `Total Questions Attempted: ${student.attemptedQuestions}`,
                   size: 24,
                   bold: true,
@@ -458,7 +478,7 @@ const getResult = async (model, generationConfig, text, rubrics) => {
     2. **If a matching rubric is found, ONLY evaluate based on it.**
        - ✅ **Strictly check for the rubric's keywords and expected answer.**  
        - ❌ **Do NOT add extra missing points or use external knowledge.**
-    3. **If no rubric exists for the question, use your general knowledge to evaluate the answer fairly out of 5.** 
+    3. **If no rubric exists for the question, use your general knowledge to evaluate the answer fairly out of 5 for each question .** 
        - If the rubric doesn’t match the question, treat the answer as a new question and apply general knowledge.
     4. **Reward correctness and partial correctness generously.**  
        - Small phrasing differences that don’t change the meaning should not affect the score.
@@ -493,8 +513,8 @@ const getResult = async (model, generationConfig, text, rubrics) => {
     ---
     
     ### **Expected Deliverables:**  
-    - **Score (out of total):** [If rubric exists, use the rubric-based score. If not, provide a fair score out of 5.]  
-    - **Correct Answer Check:** [Yes / No / Partially Correct]  
+    - **Score (out of total):** [If rubric exists, use the rubric-based score. If not, provide a fair score out of 5 for each wuestion.]  
+    - **Correct Answer Check:** [Yes /Partially Correct/ No / ]  
     - **Missing Points:** [List missing points only if they are explicitly required by the rubric.]
     - **Wrong Points:** [Only list if the answer contradicts the rubric. Do not nitpick minor errors.]  
     
@@ -504,7 +524,7 @@ const getResult = async (model, generationConfig, text, rubrics) => {
     ✅ **Strictly follow the rubric if it exists. Do not add extra missing points.**  
     ✅ **If the answer includes the rubric’s expected answer or keywords, it is correct, even if the phrasing differs slightly.**  
     ✅ **Do NOT penalize small grammar mistakes or alternative phrasing.**  
-    ✅ **If no rubric exists for the question, provide a reasonable score out of 5 using general knowledge.**  
+    ✅ **If no rubric exists for the question, provide a reasonable score out of 5 for each wuestion using general knowledge.**  
     ✅ **If the rubric is for a different question, evaluate based on your knowledge.**  
     ✅ **If no rubric is provided, use general knowledge to evaluate the answer fairly.**
     

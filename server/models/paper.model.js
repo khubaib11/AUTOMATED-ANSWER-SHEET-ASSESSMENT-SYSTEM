@@ -10,23 +10,21 @@ const paperSchema = new mongoose.Schema(
     },
     studentName: {
       type: String,
-    },
-    questionNo: {
-      type: Number,
+      required: true,
     },
     result: {
       type: String,
     },
-    submittedAnswerImage: {
-      type: Buffer, // Stores the image as binary data
-      // type: String,
-      required: true,
+    submittedAnswerImages: [
+      {
+        type: Buffer, // Stores multiple images as binary data
+        required: true,
+      },
+    ],
+    paperText: {
+      type: String,
     },
-    paperText:{
-      type:String
-    }
   },
-
   { timestamps: true }
 );
 

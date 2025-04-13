@@ -33,17 +33,13 @@ export default function UploadFiles({ setEvaluated, setLoading, setShowDoc,setIm
       let key;
   
       if (pathParts.length === 1) {
-        // Single image upload (no folder structure)
-        key = "Not Available";
+        key = "Not Available"; // Single image upload
       } else if (pathParts.length === 2) {
-        // Single folder of images
-        key = pathParts[0];
+        key = pathParts[0]; // Single folder of images
       } else {
-        // Folder of folders (nested structure)
-        key = pathParts.slice(0, -1).join("/");
+        key = pathParts.slice(0, -1).join("/"); // Folder of folders (nested)
       }
   
-      // Organize files by folder key
       if (!organizedData[key]) {
         organizedData[key] = [];
       }
@@ -57,34 +53,26 @@ export default function UploadFiles({ setEvaluated, setLoading, setShowDoc,setIm
     }
   
     // Step 2: Convert organized data into MongoDB schema format
-    for (const [folderName, images] of Object.entries(organizedData)) {
-      for (let i = 0; i < images.length; i++) {
-        const image = images[i];
-        const reader = new FileReader();
-  
-        // Wrap FileReader in a Promise
-        const bufferPromise = new Promise((resolve, reject) => {
-          reader.onloadend = () => {
-            resolve(reader.result); // Convert to Buffer
-          };
-          reader.onerror = () => {
-            reject("Error reading file");
-          };
-          reader.readAsArrayBuffer(image);
-        });
-  
-        const buffer = await bufferPromise;
-        //split folder name to get student name
-        const studentName = folderName.split("/").pop();
+    await Promise.all(
+      Object.entries(organizedData).map(async ([folderName, images]) => {
+        const imageBuffers = await Promise.all(
+          images.map((image) => 
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = () => reject("Error reading file");
+              reader.readAsArrayBuffer(image);
+            })
+          )
+        );
   
         papers.push({
-          studentName: studentName, // Use folder name as studentName
-          questionNo: i + 1, // Sequential question number starting from 1
-          result: "", // Empty result field
-          submittedAnswerImage: buffer, // Image as binary Buffer
+          studentName: folderName.split("/").pop(), // Extract student name from folder
+          submittedAnswerImages: imageBuffers, // Array of image buffers
+          result: "", // Placeholder for assessment results
         });
-      }
-    }
+      })
+    );
   
     setErrorMessage("");
     setFileSummary(papers); // Set data for backend upload
@@ -92,7 +80,7 @@ export default function UploadFiles({ setEvaluated, setLoading, setShowDoc,setIm
     setLoading(false);
     setShowDoc(false);
   };
-  
+    
   const handleFileUpload = (e) => {
     const files = e.target.files;
     if (files.length === 0) {
