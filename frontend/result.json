@@ -1,0 +1,497 @@
+[
+  {
+    "Student": 1,
+    "Question 1: what is cloud computing ?": {
+      "Score (out of 5)": 5,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is Artificial Intelligence (AI)?": {
+      "Score (out of 3)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 3: what is internet of things ?": {
+      "Score (out of 8)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Missing explicit mention of devices collecting and exchanging data.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer networking?": {
+      "Score (out of 2)": 2,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 5: what is cyber securety ?": {
+      "Score (out of 3)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Missing protection of networks, devices, and involving technologies/processes/practices beyond just saving files from viruses/attacks/scams.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 2,
+    "Question 1: what is cloud computing?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing core concepts of delivery of computing services, servers, storage, databases, networking, software, on-demand access, and scalability.",
+      "Wrong Points": "Incorrectly states it is to communicate over internet people provide services and make friend."
+    },
+    "Question 2: what is artificial intelligance ?": {
+      "Score (out of 3)": 3,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 3: what is IOT?": {
+      "Score (out of 8)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Missing explicit mention of devices collecting and exchanging data.",
+      "Wrong Points": "None"
+    },
+    "Question 4 What is computer network?": {
+      "Score (out of 7)": 5,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention sharing resources or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5 What is cyber security ?": {
+      "Score (out of 2)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Missing protection of devices and networks, and involving technologies/processes/practices beyond protecting data from hackers and strong passwords.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 3,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of cloud computing.",
+      "Wrong Points": "Incorrectly relates cloud computing to saving everything in phone gallery and send on WhatsApp."
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 3)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of AI.",
+      "Wrong Points": "Incorrectly states AI is a chip in mobile that make camera better and phone fast."
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of IoT.",
+      "Wrong Points": "Incorrectly states it is app where we can track location of people."
+    },
+    "Question 4 What is computer network?": {
+      "Score (out of 2)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of computer networking.",
+      "Wrong Points": "Incorrectly states Computer network is the server which run the whole computer and internet."
+    },
+    "Question 5 What is cybersecurity?": {
+      "Score (out of 10)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of cybersecurity.",
+      "Wrong Points": "Incorrectly states Cybersecurity is app lock or password on Instagram."
+    }
+  },
+  {
+    "Student": 4,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 7)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention the delivery of computing services like servers, databases, networking, software, on-demand access, scalability, cost-effectiveness, or flexibility. Focuses only on storage like google drive or onedrive.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is Artificial Intelligence?": {
+      "Score (out of 9)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention thinking, learning from data, making decisions, understanding language, or recognizing patterns. Focuses on robots doing jobs of humans.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IOT?": {
+      "Score (out of 1)": 1,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer network?": {
+      "Score (out of 4)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention sharing data/resources or different network types (LAN, WAN). Focuses only on many laptops connected in one lab for using same wifi.",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 5,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of cloud computing.",
+      "Wrong Points": "Incorrectly states Cloud computing is a weather app that shows cloud and sun with data."
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 6)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention machines thinking, learning, making decisions, or recognizing patterns. Only provides examples.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of IoT.",
+      "Wrong Points": "Incorrectly states It is new phone feature that make everything automatic and save battery."
+    },
+    "Question 4: What is network?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of computer networking.",
+      "Wrong Points": "Incorrectly states Network is signal of SIM card."
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 2)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Missing all key concepts of cybersecurity.",
+      "Wrong Points": "Incorrectly states Cyber security is fingerprint lock in phone."
+    }
+  },
+  {
+    "Student": 6,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 3)": 3,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is Artificial Intelligence (AI)?": {
+      "Score (out of 7)": 7,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention data exchange.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer networking?": {
+      "Score (out of 2)": 2,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is Cybersecurity?": {
+      "Score (out of 10)": 8,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting servers or involving processes and practices beyond using antivirus, firewalls, and strong passwords.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 7,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention all types of services (servers, databases, networking, software) being delivered over the internet.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention performing tasks that normally require human intelligence or recognizing patterns.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 5,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer network?": {
+      "Score (out of 5)": 5,
+      "Correct Answer Check": "Yes",
+      "Missing Points": "None",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting mobile devices or involving technologies and practices (only focuses on systems).",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 8,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention learning from data, making decisions, understanding language, or recognizing patterns. Focuses heavily on mimicking humans and job replacement.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention data collection/exchange.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is networking?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention computer networking, data sharing, or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting data, devices, networks, or involving technologies/processes/practices beyond avoiding dangerous people online, not sharing passwords, and not clicking suspicious links.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 9,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention the delivery of computing services beyond file storage and programs, or concepts like on-demand access, scalability, cost-effectiveness, or flexibility.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention thinking, making decisions, learning from data, or performing tasks that normally require human intelligence beyond the provided examples.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention devices being connected to the internet, collecting and exchanging data, or enabling remote monitoring and control. Uses a very simplistic explanation.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer network?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention sharing data/resources or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting devices, networks, or involving technologies/processes/practices beyond making data safe from hackers like locking a house online.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 10,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention the delivery of a wide range of computing services (servers, storage, databases, networking) or concepts like on-demand access, scalability, cost-effectiveness, or flexibility. Focuses only on using software.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention machines thinking, learning, making decisions, or recognizing patterns. Only provides examples.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention devices collecting and exchanging data or the network aspect beyond controlling devices remotely.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer network?": {
+      "Score (out of 5)": 4,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting devices, networks, or involving technologies/processes/practices beyond staying safe online from hackers.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 11,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention the delivery of a wide range of computing services (storage, databases, networking, software) or concepts like on-demand access, scalability, cost-effectiveness, or flexibility. Focuses only on using companies' computers through the internet to avoid buying an expensive PC.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention performing tasks that normally require human intelligence, learning from data, making decisions, or recognizing patterns. Uses a simplistic analogy of a 'brain-like feature' and provides one example.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention devices collecting and exchanging data or enabling remote monitoring and control beyond devices talking to each other and a fitness watch example.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer networking?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very basic answer. Does not mention connecting multiple devices, sharing resources beyond file transfer and communication, or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting data, devices, networks, or involving processes and practices beyond anti-virus, passwords, and not downloading from random sites.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 12,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Only mentions storage aspect. Missing the delivery of other computing services, on-demand access, scalability, cost-effectiveness, and flexibility.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explain what AI is in terms of its capabilities (thinking, learning, decision making, etc.). Focuses on a potential negative consequence.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not mention devices being connected to the internet, collecting and exchanging data, or enabling remote monitoring and control beyond connecting various items to phones.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer networking?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Does not explicitly mention protecting data, devices, networks, or involving technologies/processes/practices beyond a 'digital shield' against theft and viruses.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 13,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Focuses only on collaboration and file sharing. Does not mention the delivery of other computing services, on-demand access, scalability, cost-effectiveness, or flexibility.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is AI?": {
+      "Score (out of 5)": 3,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Only mentions learning and improving (machine learning). Does not explicitly mention performing tasks that normally require human intelligence, thinking, making decisions, understanding language, or recognizing patterns.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very general answer. Does not mention devices being connected to the internet, collecting and exchanging data, or enabling remote monitoring and control.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is networking?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very general answer. Does not explicitly mention computer networking, connecting multiple devices, sharing data/resources, or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very general answer. Does not explicitly mention protecting data, devices, networks, or the specific types of cyberattacks.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 14,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is Artificial Intelligence?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 0,
+      "Correct Answer Check": "No",
+      "Missing Points": "Student did not answer this question.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is computer network?": {
+      "Score (out of 5)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very basic answer. Does not mention connecting multiple devices, sharing data/resources, or different network types (Wi-Fi, LAN, WAN). Only mentions joining laptops with wires.",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very basic answer. Missing details about protecting data, devices, networks, and involving technologies/processes/practices beyond a 'security guard of computer'.",
+      "Wrong Points": "None"
+    }
+  },
+  {
+    "Student": 15,
+    "Question 1: What is cloud computing?": {
+      "Score (out of 5)": 1,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Only mentions storage aspect for backup. Missing the delivery of other computing services, on-demand access, scalability, cost-effectiveness, and flexibility.",
+      "Wrong Points": "None"
+    },
+    "Question 2: What is Artificial Intelligence?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Only mentions making apps smarter and one example (autofill). Missing core concepts of machines thinking, learning, making decisions, understanding language, or recognizing patterns.",
+      "Wrong Points": "None"
+    },
+    "Question 3: What is IoT?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Mentions devices being online and a smart house example, but does not explicitly mention data collection/exchange or enabling remote monitoring and control.",
+      "Wrong Points": "None"
+    },
+    "Question 4: What is networking?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Very basic answer. Does not explicitly mention computer networking, sharing data/resources, or different network types (LAN, WAN).",
+      "Wrong Points": "None"
+    },
+    "Question 5: What is cybersecurity?": {
+      "Score (out of 5)": 2,
+      "Correct Answer Check": "Partially Correct",
+      "Missing Points": "Only mentions safety from people trying to steal data online. Missing details about protecting devices, networks, or involving technologies/processes/practices beyond that.",
+      "Wrong Points": "None"
+    }
+  }
+]

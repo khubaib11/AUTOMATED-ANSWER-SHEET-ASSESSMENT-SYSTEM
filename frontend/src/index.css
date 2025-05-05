@@ -22,3 +22,22 @@ html, body {
     flex: 1;
   }
   
+
+  .loader {
+    width: 300px; /* Increased width for a longer bar */
+    height: 14px;
+    --c: #0b0c0c 92%, #22212100;
+    background: 
+      radial-gradient(circle closest-side, var(--c)) calc(100% / -4) 0,
+      radial-gradient(circle closest-side, var(--c)) calc(100% / 4) 0;
+    background-size: calc(100% / 2) 100%;
+    animation: l14 1.5s infinite;
+    margin: 0 auto; /* Centers the loader */
+  }
+  
+  @keyframes l14 {
+    0%   { background-position: calc(100% / -4) 0, calc(100% / 4) 0; }
+    50%  { background-position: calc(100% / -4) -14px, calc(100% / 4) 14px; }
+    100% { background-position: calc(100% / 4) -14px, calc(3 * 100% / 4) 14px; }
+  }
+  

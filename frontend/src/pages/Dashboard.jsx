@@ -22,7 +22,6 @@ export default function Dashboard() {
   const [imagesData, setImagesData] = useState({});
   const [loading, setLoading] = useState(false);
   const [evaluated, setEvaluated] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [showDoc, setShowDoc] = useState(false);
   const [finalResult, setFinalResult] = useState(false);
   const [selectedModel, setSelectedModel] = useState("Llama-3.2-11B");
@@ -149,7 +148,6 @@ export default function Dashboard() {
   const handleEvaluated = async () => {
     if (evaluated) {
       setLoading(true);
-      setProgress(0);
       setFinalResult(false); // Ensure finalResult resets
 
       console.log("Evaluating with data:", rubricData, imagesData);
@@ -211,45 +209,20 @@ export default function Dashboard() {
 
     verifyUser();
   }, [dispatch, navigate]);
+  
+  
   useEffect(() => {
-    let interval;
-    let timeout;
 
-    if (loading) {
-      setProgress(0); // Reset progress when loading starts
-
-      interval = setInterval(() => {
-        setProgress((prev) => {
-          const nextProgress = prev + 2;
-          if (nextProgress >= 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          return nextProgress;
-        });
-      }, 6000); // 2% increase every 6 seconds (100% in ~5 minutes)
-
-      timeout = setTimeout(() => {
-        if (!finalResult) {
-          clearInterval(interval);
-          setLoading(false);
-          console.error("Error: Result generation timed out.");
-        }
-      }, 300000); // 5 minutes timeout
-    }
-
-    if (finalResult) {
-      clearInterval(interval);
-      setProgress(100);
+    if (finalResult) {      
       setLoading(false);
       setShowDoc(true);
+    }else if (loading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
     }
 
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [loading, finalResult]);
+  }, [ finalResult]);
 
   return (
     <section className="text-gray-700 body-font bg-gray-50 min-h-screen">
@@ -365,19 +338,12 @@ export default function Dashboard() {
 
         {/* Progress Bar */}
         {loading ? (
-          <div className="flex flex-col text-center w-full mt-4">
-            <h1 className="text-xl font-medium title-font text-gray-900">
+          <div className="flex flex-col text-center w-full mt-6">
+            <h1 className="text-xl font-medium title-font text-gray-900 mb-6">
               Processing...
             </h1>
-            <div className="relative pt-2 w-3/4 sm:w-1/2 mx-auto">
-              <div className="overflow-hidden h-2 mb-4 text-xs rounded bg-gray-200">
-                <div
-                  style={{ width: `${progress}%` }}
-                  className="h-full bg-indigo-500"
-                ></div>
-              </div>
-              <p className="text-sm text-gray-700">{progress}% Completed</p>
-            </div>
+            
+            <div className="loader "></div>
           </div>
         ) : showDoc ? (
           <DocxViewer id={currentUser._id} />
