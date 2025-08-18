@@ -60,7 +60,7 @@ const GenerateResults = async (req, res) => {
 
     //tunedModels/generate-num-3435
     const model = genAI.getGenerativeModel({
-      model: "tunedModels/generate-num-3435",
+      model: "models/gemini-1.5-flash",
     });
 
     const generationConfig = {

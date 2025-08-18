@@ -45,6 +45,7 @@ const GPT4ImagetoText = async (imageBuffer) => {
     apiKey: token
   });
 
+  
   try {
     const base64Image = imageBuffer.toString("base64"); // Convert Buffer to Base64
 
@@ -60,6 +61,7 @@ const GPT4ImagetoText = async (imageBuffer) => {
         },
       ],
     });
+
 
     return response.choices?.[0]?.message?.content || "";
   } catch (error) {
@@ -120,7 +122,7 @@ const H2OVLmississippi= async (imageBuffer) => {
 
     return  res.data.response || "";
   } catch (err) {
-    console.error("Error processing image:", err);
+    console.error("Error processing image:", err);  
     return ""; // Return empty text in case of error
   }
 
