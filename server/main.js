@@ -45,6 +45,6 @@ app.use('/api/paper',paperRoute);
 
 
 
-app.listen(3002,()=>{
+app.listen(process.env.PORT || 3002,()=>{
     console.log('Server is running on port 3002');
 });
